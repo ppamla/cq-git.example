@@ -1,4 +1,4 @@
-# **git basic commands**
+# **Git Basic Commands**
 
 ## 1. *clone* = git clone + a repository_url 
 
@@ -20,4 +20,3 @@
 
 ### - tells git to rename a file
 
-**I did something stupid here**
