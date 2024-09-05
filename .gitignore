@@ -1,3 +1,3 @@
-.pdf
-.html
-.RProj
+*.pdf
+*.html
+*.Rproj
