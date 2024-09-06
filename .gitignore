@@ -1,3 +1,10 @@
 *.pdf
 *.html
 *.Rproj
+**/.nextflow.log*
+*xaa
+*xab
+*xac
+*xad
+*xae
+*xaf
