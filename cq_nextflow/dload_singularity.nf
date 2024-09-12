@@ -41,11 +41,11 @@ process summaryStats {
 	input:
      path accession
 	output: 
-     path "*"
+     path "${accession}.fastq.stats"
 
     script:
     """
-    fastqutils stats $accession > ${accession}.stats
+    fastqutils stats $accession > ${accession}.fastq.stats
     """
 }
 
