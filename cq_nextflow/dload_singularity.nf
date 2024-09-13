@@ -23,10 +23,9 @@ process convertToFastq {
 	publishDir params.out
 	container "https://depot.galaxyproject.org/singularity/sra-tools%3A2.11.0--pl5321ha49a11a_3"
 	input:
-    path accession
-
+     path accession
     output:
-    path "${accession}.fastq"
+     path "${accession}.fastq"
 
     script:
     """
@@ -34,24 +33,26 @@ process convertToFastq {
     """
 }
 
-process summaryStats {
-    //storeDir params.storeDir
-	publishDir params.out, mode:"copy", overwrite:true
-	container "https://depot.galaxyproject.org/singularity/ngsutils%3A0.5.9--py27h9801fc8_5"
+process runFastQC {
+	storeDir params.storeDir
+	publishDir params.out, mode: "copy", overwrite: true
+	container "https://depot.galaxyproject.org/singularity/fastqc%3A0.12.1--hdfd78af_0"
 	input:
-     path accession
+     path fastqFile
 	output: 
-     path "${accession}.fastq.stats"
+     path "${fastqFile.getSimpleName()}_fastqc.html"
 
     script:
     """
-    fastqutils stats $accession > ${accession}.fastq.stats
+	mkdir FastQC
+	fastqc -o . ${fastqFile}
     """
 }
 
 workflow {
-    prefetchChannel=prefetchSRA(Channel.from(params.accession))
-	convertionChannel=convertToFastq(prefetchChannel)
-	stats=summaryStats(convertionChannel)
+    prefetchChannel = Channel.from(params.accession)
+    conversionChannel = prefetchSRA(prefetchChannel)
+    conversionChannel = convertToFastq(conversionChannel)
+    runFastQC(conversionChannel)
 }
 
