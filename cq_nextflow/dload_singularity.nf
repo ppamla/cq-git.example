@@ -40,11 +40,10 @@ process runFastQC {
 	input:
      path fastqFile
 	output: 
-     path "${fastqFile.getSimpleName()}_fastqc.html"
+     path "${fastqFile.getSimpleName()}_fastqc.*"
 
     script:
     """
-	mkdir FastQC
 	fastqc -o . ${fastqFile}
     """
 }
@@ -53,6 +52,6 @@ workflow {
     prefetchChannel = Channel.from(params.accession)
     conversionChannel = prefetchSRA(prefetchChannel)
     conversionChannel = convertToFastq(conversionChannel)
-    runFastQC(conversionChannel)
+    runFastQC(conversionChannel) 
 }
 
